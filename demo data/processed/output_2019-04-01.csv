@@ -1,0 +1,5 @@
+PortfolioId,SecurityId,PositionType,Position
+1,1,Held,0.0
+1,1,Desired,100.0
+1,3,Held,100.0
+1,3,Desired,0.0

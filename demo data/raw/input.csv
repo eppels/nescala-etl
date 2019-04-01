@@ -1,0 +1,4 @@
+PortfolioName,SecurityName,HeldPosition,DesiredPosition
+portfolio1,apple,0,100
+portfolio1,usaBondIsin,100,0
+portfolio2,randomId,0,0
