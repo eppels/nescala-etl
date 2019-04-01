@@ -2,8 +2,11 @@
 Code from my presentation on ETL at Northeast Scala 4/2/2019
 
 Framework package is full representation of what is used internally
+
 Utils package are stubs of utilities that were already existing
+
 Model package is a stub of our internal domain model
+
 Demo package is an example of what a functioning app extending the framework would look like
 
 In the demo data directory there is a sample input and output file for the MovePositionsJob
