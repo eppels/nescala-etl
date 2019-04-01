@@ -17,6 +17,8 @@ object DemoTowTruckApp extends ITowTruckApp[TowTruckRunModeConfig] with ConsoleL
     Seq(
       new TowTruckRunMode("MovePositions") {
 
+        //todo - point the below to the right location on your machine if you are trying to run this yourself
+        //if you want to try getting your hands dirty w/ this framework, one of the extensions is to take these in as command line args
         val sourceFile = Paths.get("/Users", "max", "demo", "raw", "input.csv")
         val destinationFolder = Paths.get("/Users", "max", "demo", "processed")
         val desitnationName = s"output_${LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))}.csv"
@@ -29,6 +31,7 @@ object DemoTowTruckApp extends ITowTruckApp[TowTruckRunModeConfig] with ConsoleL
           new MovePositionsJob(sourceFile, csvPersister)
         )
 
+        //here's an example of using cleanUp to flush & close the write buffers, as you may use the same csv persister for multiple jobs
         override def cleanUp(results: Iterable[TowTruckJobResult[_]]): Unit = {
           csvPersister.close()
         }

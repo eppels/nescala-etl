@@ -2,6 +2,10 @@ package framework
 
 import utils.Logging
 
+/*
+Apps using this framework will extend this trait
+All the apps have to do is implement how to get from args to a config
+ */
 trait ITowTruckApp[T <: TowTruckAppConfig] extends Logging {
 
   protected def parseArgs(args: Array[String]): Option[T]
@@ -38,18 +42,19 @@ trait ITowTruckApp[T <: TowTruckAppConfig] extends Logging {
     } else {
       log("tow truck ran all methods successfully. Printing report")
     }
-    failed.map(_.method).foreach { method =>
+    failed.map(_.job).foreach { method =>
       log(s"FAILED - ${method.jobName} failed to update ${method.destinationDescription}")
     }
-    succeeded.map(_.method).foreach { method =>
+    succeeded.map(_.job).foreach { method =>
       log(s"SUCCEEDED - ${method.jobName} successfully updated ${method.destinationDescription}")
     }
+
     val exitCode = if (failed.isEmpty) 0 else -100
     log(s"exiting with code $exitCode")
     sys.exit(exitCode)
   }
 
-  def main(args: Array[String]): Unit = {
+  final def main(args: Array[String]): Unit = {
     try {
       parseArgs(args) match {
         case Some(config) =>
