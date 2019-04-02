@@ -18,12 +18,12 @@ trait ITowTruckApp[T <: TowTruckAppConfig] extends Logging {
 
     val results: Iterable[TowTruckJobResult[_]] = {
 
-      if(config.runMode.runJobsInParallel) {
+      if (config.runMode.runJobsInParallel) {
 
         config.runMode.jobsToRun
           .groupBy(_.grouperForParallelization.groupingKey)
           .par
-          .flatMap { case (_, actionsOnTable) => actionsOnTable.map(runJob) }
+          .flatMap { case (_, jobs) => jobs.map(runJob) }
           .seq
 
       } else {

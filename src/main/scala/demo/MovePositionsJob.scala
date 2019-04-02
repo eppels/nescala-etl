@@ -18,7 +18,7 @@ import scala.util.Try
 case class ModeledPosition(portfolio: Portfolio, security: Security, positionType: PositionType, position: Double)
 case class PositionsOutput(portfolioId: Int, securityId: Int, positionType: String, position: Double)
 
-//as mentioned earlier jobs are designed to avoid throwing exceptions, and instead just model whatever it can and throw away what it can't
+//jobs are designed to avoid throwing exceptions, and instead just model whatever it can and throw away what it can't
 //this can be a concern at both extraction and loading step as demonstrated here
 class MovePositionsJob(sourceFile: Path,
                        override protected val csvPersister: CSVDiagnosticLogger)
