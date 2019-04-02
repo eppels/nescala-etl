@@ -53,9 +53,9 @@ trait OneSqlTableWrite[Rich, Raw] extends TowTruckJob[Raw] with SqlTableInsert {
 
   final override def grouperForParallelization: GrouperForParallelization = SqlTableGrouper(table)
 
-  final override def prepareData: Iterable[Raw] = serialize(stagedData)
+  final override def extract: Iterable[Raw] = serialize(stagedData)
 
-  final override def persist(in: Iterable[Raw]): Unit = insertTable(table, in.toSeq, clearCriteria)
+  final override def load(in: Iterable[Raw]): Unit = insertTable(table, in.toSeq, clearCriteria)
 
   final override def destinationDescription: String = s"sql table ${table.name}"
 }
@@ -68,11 +68,11 @@ abstract class OneCsvFileWrite[Rich, Raw: TypeTag](implicit ev: CSVLoggable[Raw]
 
   protected def serialize(in: Iterable[Rich]): Iterable[Raw]
 
-  final override def prepareData: Iterable[Raw] = {
+  final override def extract: Iterable[Raw] = {
     serialize(stagedData)
   }
 
-  final override def persist(in: Iterable[Raw]): Unit = {
+  final override def load(in: Iterable[Raw]): Unit = {
     writeCsv(in.toSeq)
   }
 

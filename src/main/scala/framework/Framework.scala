@@ -43,9 +43,9 @@ trait TowTruckJob[T] extends Logging {
 
   val jobName: String = this.getClass.getSimpleName
 
-  def prepareData: Iterable[T] //the extract, at the level of a concrete job the class constructors provide a way to construct this
+  def extract: Iterable[T] //at the level of a concrete job the class constructors provide a way to construct this
 
-  def persist(in: Iterable[T]): Unit //the load
+  def load(in: Iterable[T]): Unit //the load
 
   def destinationDescription: String //this is typically set at the job template level
 
@@ -73,7 +73,7 @@ trait TowTruckJob[T] extends Logging {
 
     log(s"starting $jobName")
 
-    val dataTry: Try[Iterable[T]] = getDataWithAutoRetry(Future(Try(prepareData)))
+    val dataTry: Try[Iterable[T]] = getDataWithAutoRetry(Future(Try(extract)))
 
     log(dataTry match {
       case Success(_) => s"finished fetching data for $jobName, now persisting it"
@@ -82,7 +82,7 @@ trait TowTruckJob[T] extends Logging {
 
     val persistenceResult = dataTry match {
       case Success(data) if data.isEmpty && failIfNoDataToPersist => Failure(EmptyInputsException)
-      case Success(data) => Try(persist(data))
+      case Success(data) => Try(load(data))
       case f@Failure(_) => f
     }
 
